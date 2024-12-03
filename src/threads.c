@@ -5,57 +5,61 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: amuhsen- <amuhsen-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/02 21:30:02 by amuhsen-          #+#    #+#             */
-/*   Updated: 2024/12/03 03:38:51 by amuhsen-         ###   ########.fr       */
+/*   Created: 2024/10/11 14:01:57 by druina            #+#    #+#             */
+/*   Updated: 2024/12/03 23:40:10 by amuhsen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int dead_check(t_philo *philo)
+int	dead_loop(t_philo *philo)
 {
-    pthread_mutex_lock(philo->dead_lock);
-    if (*philo->dead == 1)
-        return (pthread_mutex_unlock(philo->dead_lock), 1);
-    pthread_mutex_unlock(philo->dead_lock);
-    return (0);
+	pthread_mutex_lock(philo->dead_lock);
+	if (*philo->dead == 1)
+		return (pthread_mutex_unlock(philo->dead_lock), 1);
+	pthread_mutex_unlock(philo->dead_lock);
+	return (0);
 }
 
-void    *philo_routine(void *ptr)
+void	*philo_routine(void *pointer)
 {
-    t_philo *philo;
+	t_philo	*philo;
 
-    philo = (t_philo *)ptr;
-    if (philo->id % 2 == 0)
-        ft_usleep(1);
-    while (1)
-    {
-        eat(philo);
-        sleep(philo);
-        print_status(philo, "is thinking");
-    }
-    return (ptr);
+	philo = (t_philo *)pointer;
+	if (philo->id % 2 == 0)
+		ft_usleep(1);
+	while (!dead_loop(philo))
+	{
+		eat(philo);
+		dream(philo);
+		think(philo);
+	}
+	return (pointer);
 }
 
-int create_threads(t_program *program, pthread_mutex_t *forks)
+int	thread_create(t_program *program, pthread_mutex_t *forks)
 {
-    int	i;
+	pthread_t	observer;
+	int			i;
 
-    i = 0;
-    program->philos[0].start_time = get_time();
-    while (i < program->philos[0].num_of_philos)
-    {
-        if (pthread_create(&program->philos[i].thread, NULL, &philo_routine,
-                &program->philos[i]))
-            return (write(2, "\033[31mError creating thread\n", 27), 1);
-        i++;
-    }
-    i = 0;
-    while (i < program->philos[0].num_of_philos)
-    {
-        if (pthread_join(program->philos[i].thread, NULL))
-            return (write(2, "\033[31mError joining thread\n", 26), 1);
-        i++;
-    }
-    return (0);
+	if (pthread_create(&observer, NULL, &monitor, program->philos) != 0)
+		destory_all("Thread creation error", program, forks);
+	i = 0;
+	while (i < program->philos[0].num_of_philos)
+	{
+		if (pthread_create(&program->philos[i].thread, NULL, &philo_routine,
+				&program->philos[i]) != 0)
+			destory_all("Thread creation error", program, forks);
+		i++;
+	}
+	i = 0;
+	if (pthread_join(observer, NULL) != 0)
+		destory_all("Thread join error", program, forks);
+	while (i < program->philos[0].num_of_philos)
+	{
+		if (pthread_join(program->philos[i].thread, NULL) != 0)
+			destory_all("Thread join error", program, forks);
+		i++;
+	}
+	return (0);
 }

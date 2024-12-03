@@ -3,40 +3,42 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amuhsen- <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: amuhsen- <amuhsen-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/11/03 23:15:49 by amuhsen-          #+#    #+#              #
-#    Updated: 2024/12/02 23:30:08 by amuhsen-         ###   ########.fr        #
+#    Created: 2024/10/26 14:19:21 by druina            #+#    #+#              #
+#    Updated: 2024/12/03 23:38:36 by amuhsen-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		= src/main.c src/utils src/actions \
-	  	  src/initialize src/monitor src/threads
+NAME = philo
 
-NAME		= philo
+SRC = main.c utils.c init.c threads.c monitor.c routine_actions.c
 
-OBJ		= $(SRC:.c=.o)
+MANPATH = $(addprefix ./src/, $(SRC))
 
-CC		= cc
+FLAGS = -O3 -pthread
 
-CFLAGS		= -Wall -Wextra -Werror -O3 -pthread
+HEADER = ./includes/philo.h
 
-# FSANITIZE	= fsanitize=thread 
+# SANITIZER = -fsanitize=thread
+
+.PHONY: all clean fclean re debug
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
-
-%.o: %.c
-	@$(CC) $(CFLAGS) -c $< -o $@
+$(NAME): $(MANPATH) $(HEADER)
+	@cc $(FLAGS) -o $(NAME) $(MANPATH) $(SANITIZER)
 
 clean:
-	rm -rf $(OBJ)
+	@rm -f $(NAME)
 
 fclean: clean
-	rm -rf $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+debug: FLAGS += -g
+debug: re
+
+delay:
+	python3 delay_o_meter.py

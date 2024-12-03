@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: amuhsen- <amuhsen-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/03 23:34:40 by amuhsen-          #+#    #+#             */
-/*   Updated: 2024/12/03 03:38:52 by amuhsen-         ###   ########.fr       */
+/*   Created: 2024/10/26 14:20:06 by druina            #+#    #+#             */
+/*   Updated: 2024/12/03 23:04:12 by amuhsen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 # include <unistd.h>
 
 # define PHILO_MAX 300
-# define RESET_COLOR "\033[0m"
-# define RED_COLOR "\033[31m"
 
 typedef struct s_philo
 {
@@ -51,37 +49,37 @@ typedef struct s_program
 	t_philo			*philos;
 }					t_program;
 
-/* main.c */
+// main.c
 int					check_arg_content(char *arg);
-int					check_args(char **argv);
+int					check_valid_args(char **argv);
 void				destory_all(char *str, t_program *program,
 						pthread_mutex_t *forks);
 
-/* initialize.c */
-void				load_program(t_program *program, t_philo *philos);
-void				load_forks(pthread_mutex_t *forks, int philo_num);
-void				load_philos(t_philo *philos, t_program *program,
+// init.c
+void				init_program(t_program *program, t_philo *philos);
+void				init_forks(pthread_mutex_t *forks, int philo_num);
+void				init_philos(t_philo *philos, t_program *program,
 						pthread_mutex_t *forks, char **argv);
-void				load_input(t_philo *philo, char **argv);
+void				init_input(t_philo *philo, char **argv);
 
-/* threads.c */
+// threads.c
 int					thread_create(t_program *program, pthread_mutex_t *forks);
 void				*monitor(void *pointer);
 void				*philo_routine(void *pointer);
 
-/* actions.c */
+// routine_actions.c
 void				eat(t_philo *philo);
-void				sleep(t_philo *philo);
+void				dream(t_philo *philo);
 void				think(t_philo *philo);
 
-/* monitor.c */
+// monitor.c
 int					dead_loop(t_philo *philo);
 int					check_if_all_ate(t_philo *philos);
 int					check_if_dead(t_philo *philos);
 int					philosopher_dead(t_philo *philo, size_t time_to_die);
 
-/* utils.c */
-int					ft_atoi(const char *str);
+// utils.c
+int					ft_atoi(char *str);
 int					ft_usleep(size_t microseconds);
 int					ft_strlen(char *str);
 void				print_message(char *str, t_philo *philo, int id);
