@@ -6,7 +6,7 @@
 /*   By: amuhsen- <amuhsen-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 14:20:06 by druina            #+#    #+#             */
-/*   Updated: 2024/12/03 23:04:12 by amuhsen-         ###   ########.fr       */
+/*   Updated: 2024/12/03 23:49:34 by amuhsen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_program
 // main.c
 int					check_arg_content(char *arg);
 int					check_valid_args(char **argv);
-void				destory_all(char *str, t_program *program,
+void				destory_all(t_program *program,
 						pthread_mutex_t *forks);
 
 // init.c

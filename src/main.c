@@ -6,7 +6,7 @@
 /*   By: amuhsen- <amuhsen-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 14:23:28 by druina            #+#    #+#             */
-/*   Updated: 2024/12/03 23:39:13 by amuhsen-         ###   ########.fr       */
+/*   Updated: 2024/12/03 23:50:38 by amuhsen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,6 @@ int	main(int argc, char **argv)
 	init_forks(forks, ft_atoi(argv[1]));
 	init_philos(philos, &program, forks, argv);
 	thread_create(&program, forks);
-	destory_all(NULL, &program, forks);
+	destory_all(&program, forks);
 	return (0);
 }

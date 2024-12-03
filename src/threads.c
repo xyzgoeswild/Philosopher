@@ -6,7 +6,7 @@
 /*   By: amuhsen- <amuhsen-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 14:01:57 by druina            #+#    #+#             */
-/*   Updated: 2024/12/03 23:40:10 by amuhsen-         ###   ########.fr       */
+/*   Updated: 2024/12/03 23:51:26 by amuhsen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,22 @@ int	thread_create(t_program *program, pthread_mutex_t *forks)
 	int			i;
 
 	if (pthread_create(&observer, NULL, &monitor, program->philos) != 0)
-		destory_all("Thread creation error", program, forks);
+		destory_all(program, forks);
 	i = 0;
 	while (i < program->philos[0].num_of_philos)
 	{
 		if (pthread_create(&program->philos[i].thread, NULL, &philo_routine,
 				&program->philos[i]) != 0)
-			destory_all("Thread creation error", program, forks);
+			destory_all(program, forks);
 		i++;
 	}
 	i = 0;
 	if (pthread_join(observer, NULL) != 0)
-		destory_all("Thread join error", program, forks);
+		destory_all(program, forks);
 	while (i < program->philos[0].num_of_philos)
 	{
 		if (pthread_join(program->philos[i].thread, NULL) != 0)
-			destory_all("Thread join error", program, forks);
+			destory_all(program, forks);
 		i++;
 	}
 	return (0);

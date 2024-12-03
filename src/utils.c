@@ -6,7 +6,7 @@
 /*   By: amuhsen- <amuhsen-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 09:17:55 by druina            #+#    #+#             */
-/*   Updated: 2024/12/03 23:39:28 by amuhsen-         ###   ########.fr       */
+/*   Updated: 2024/12/03 23:49:02 by amuhsen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ft_atoi(char *str)
 	return (sign * nb);
 }
 
-void	destory_all(char *str, t_program *program, pthread_mutex_t *forks)
+void	destory_all(t_program *program, pthread_mutex_t *forks)
 {
 	int	i;
 

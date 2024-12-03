@@ -6,7 +6,7 @@
 #    By: amuhsen- <amuhsen-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/26 14:19:21 by druina            #+#    #+#              #
-#    Updated: 2024/12/03 23:38:36 by amuhsen-         ###   ########.fr        #
+#    Updated: 2024/12/03 23:48:18 by amuhsen-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,11 @@ SRC = main.c utils.c init.c threads.c monitor.c routine_actions.c
 
 MANPATH = $(addprefix ./src/, $(SRC))
 
-FLAGS = -O3 -pthread
+FLAGS = -Wall -Wextra -Werror -O3 -pthread
 
 HEADER = ./includes/philo.h
 
 # SANITIZER = -fsanitize=thread
-
-.PHONY: all clean fclean re debug
 
 all: $(NAME)
 
@@ -37,8 +35,4 @@ fclean: clean
 
 re: fclean all
 
-debug: FLAGS += -g
-debug: re
-
-delay:
-	python3 delay_o_meter.py
+.PHONY: all clean fclean re debug
